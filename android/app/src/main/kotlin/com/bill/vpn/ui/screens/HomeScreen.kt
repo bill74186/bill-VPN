@@ -1,4 +1,4 @@
-package com.moi.lumine.ui.screens
+package com.bill.vpn.ui.screens
 
 import android.content.Context
 import android.content.Intent
@@ -31,8 +31,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.moi.lumine.ui.ConfigViewModel
-import com.moi.lumine.ui.Screen
+import com.bill.vpn.ui.ConfigViewModel
+import com.bill.vpn.ui.Screen
 
 private val HomePrimaryCardHeight = 100.dp
 

@@ -1,4 +1,4 @@
-package com.moi.lumine.ui.screens
+package com.bill.vpn.ui.screens
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
@@ -61,10 +61,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.moi.lumine.model.SubscriptionProfile
-import com.moi.lumine.ui.ConfigViewModel
-import com.moi.lumine.ui.SubscriptionImportStage
-import com.moi.lumine.ui.SubscriptionImportState
+import com.bill.vpn.model.SubscriptionProfile
+import com.bill.vpn.ui.ConfigViewModel
+import com.bill.vpn.ui.SubscriptionImportStage
+import com.bill.vpn.ui.SubscriptionImportState
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale

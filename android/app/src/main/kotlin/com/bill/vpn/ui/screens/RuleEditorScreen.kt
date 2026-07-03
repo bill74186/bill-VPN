@@ -1,4 +1,4 @@
-package com.moi.lumine.ui.screens
+package com.bill.vpn.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,8 +10,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.moi.lumine.ui.ConfigViewModel
-import com.moi.lumine.model.Policy
+import com.bill.vpn.ui.ConfigViewModel
+import com.bill.vpn.model.Policy
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

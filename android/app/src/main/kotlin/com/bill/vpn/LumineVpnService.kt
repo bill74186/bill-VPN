@@ -1,4 +1,4 @@
-package com.moi.lumine
+package com.bill.vpn
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -9,7 +9,7 @@ import android.os.Build
 import android.os.ParcelFileDescriptor
 import android.os.SystemClock
 import android.util.Log
-import com.moi.lumine.repository.ConfigRepository
+import com.bill.vpn.repository.ConfigRepository
 import java.io.File
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

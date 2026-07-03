@@ -1,4 +1,4 @@
-package com.moi.lumine.ui
+package com.bill.vpn.ui
 
 sealed class Screen(val route: String) {
     object Home : Screen("home")

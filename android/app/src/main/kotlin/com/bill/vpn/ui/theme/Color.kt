@@ -1,4 +1,4 @@
-package com.moi.lumine.ui.theme
+package com.bill.vpn.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

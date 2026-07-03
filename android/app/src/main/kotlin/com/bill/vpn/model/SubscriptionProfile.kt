@@ -1,4 +1,4 @@
-package com.moi.lumine.model
+package com.bill.vpn.model
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

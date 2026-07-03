@@ -1,4 +1,4 @@
-package com.moi.lumine
+package com.bill.vpn
 
 import android.content.Intent
 import android.net.VpnService
@@ -28,10 +28,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.*
 import androidx.navigation.navArgument
-import com.moi.lumine.ui.ConfigViewModel
-import com.moi.lumine.ui.Screen
-import com.moi.lumine.ui.screens.*
-import com.moi.lumine.ui.theme.LumineTheme
+import com.bill.vpn.ui.ConfigViewModel
+import com.bill.vpn.ui.Screen
+import com.bill.vpn.ui.screens.*
+import com.bill.vpn.ui.theme.LumineTheme
 import mobile.Mobile
 
 class MainActivity : ComponentActivity() {

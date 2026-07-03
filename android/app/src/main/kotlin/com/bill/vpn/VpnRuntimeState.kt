@@ -1,4 +1,4 @@
-package com.moi.lumine
+package com.bill.vpn
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

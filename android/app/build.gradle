@@ -23,7 +23,7 @@ def hasReleaseSigning = releaseKeystorePath != null &&
         releaseKeyPassword != null
 
 android {
-    namespace 'com.moi.lumine'
+    namespace 'com.bill.vpn'
     compileSdk 36
 
     splits {
@@ -51,7 +51,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.moi.lumine"
+        applicationId "com.bill.vpn"
         minSdk 24
         targetSdk 36
         versionCode 17

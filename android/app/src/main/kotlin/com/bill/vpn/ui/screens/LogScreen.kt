@@ -1,6 +1,6 @@
 @file:OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
 
-package com.moi.lumine.ui.screens
+package com.bill.vpn.ui.screens
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -60,9 +60,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.moi.lumine.RuntimeLogEntry
-import com.moi.lumine.RuntimeLogLevel
-import com.moi.lumine.ui.ConfigViewModel
+import com.bill.vpn.RuntimeLogEntry
+import com.bill.vpn.RuntimeLogLevel
+import com.bill.vpn.ui.ConfigViewModel
 
 private const val LOG_LIST_HEADER_COUNT = 2
 

@@ -1,5 +1,5 @@
 # Keep Moshi-serialized models stable when shrinking.
--keep class com.moi.lumine.model.** { *; }
+-keep class com.bill.vpn.model.** { *; }
 -keep @com.squareup.moshi.JsonClass class * { *; }
 -keep class **JsonAdapter { *; }
 

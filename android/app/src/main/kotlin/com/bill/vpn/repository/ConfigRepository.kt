@@ -1,11 +1,11 @@
-package com.moi.lumine.repository
+package com.bill.vpn.repository
 
 import android.content.Context
 import android.net.Uri
 import androidx.core.content.FileProvider
-import com.moi.lumine.VpnStatus
-import com.moi.lumine.model.LumineConfig
-import com.moi.lumine.model.SubscriptionProfile
+import com.bill.vpn.VpnStatus
+import com.bill.vpn.model.LumineConfig
+import com.bill.vpn.model.SubscriptionProfile
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
