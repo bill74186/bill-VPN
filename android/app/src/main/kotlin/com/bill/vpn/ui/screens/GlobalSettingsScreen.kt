@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -32,6 +33,11 @@ fun GlobalSettingsScreen(navController: NavController, viewModel: ConfigViewMode
         topBar = {
             TopAppBar(
                 title = { Text("全局设置") },
+                navigationIcon = {
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                    }
+                },
                 actions = {
                     IconButton(onClick = {
                         val updatedConfig = config.copy(
@@ -54,28 +60,6 @@ fun GlobalSettingsScreen(navController: NavController, viewModel: ConfigViewMode
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
         ) {
-            Text("外观", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary)
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text("主题模式", style = MaterialTheme.typography.labelLarge)
-            Spacer(modifier = Modifier.height(4.dp))
-            val themeOptions = listOf(
-                ThemeMode.Light to "日间模式",
-                ThemeMode.Dark to "夜间模式",
-                ThemeMode.System to "跟随系统"
-            )
-            themeOptions.forEach { (mode, label) ->
-                Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
-                    RadioButton(
-                        selected = (currentThemeMode == mode),
-                        onClick = { themePreferences.setThemeMode(mode) }
-                    )
-                    Text(label, modifier = Modifier.padding(start = 8.dp))
-                }
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
             Text("核心设置", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary)
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -95,6 +79,25 @@ fun GlobalSettingsScreen(navController: NavController, viewModel: ConfigViewMode
                 Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
                     RadioButton(selected = (logLevel == level), onClick = { logLevel = level })
                     Text(level, modifier = Modifier.padding(start = 8.dp))
+                }
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Text("主题模式", style = MaterialTheme.typography.labelLarge)
+            Spacer(modifier = Modifier.height(4.dp))
+            val themeOptions = listOf(
+                ThemeMode.Light to "日间模式",
+                ThemeMode.Dark to "夜间模式",
+                ThemeMode.System to "跟随系统"
+            )
+            themeOptions.forEach { (mode, label) ->
+                Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
+                    RadioButton(
+                        selected = (currentThemeMode == mode),
+                        onClick = { themePreferences.setThemeMode(mode) }
+                    )
+                    Text(label, modifier = Modifier.padding(start = 8.dp))
                 }
             }
         }
