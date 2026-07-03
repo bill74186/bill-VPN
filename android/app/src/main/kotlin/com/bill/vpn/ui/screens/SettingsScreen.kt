@@ -17,7 +17,7 @@ import com.bill.vpn.ui.theme.ThemeMode
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GlobalSettingsScreen(navController: NavController, viewModel: ConfigViewModel) {
+fun SettingsScreen(navController: NavController, viewModel: ConfigViewModel) {
     val config by viewModel.currentConfig.collectAsState()
     val themePreferences = LocalThemePreferences.current
     val currentThemeMode by themePreferences.themeMode.collectAsState()

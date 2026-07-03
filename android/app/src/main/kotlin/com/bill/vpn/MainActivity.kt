@@ -157,7 +157,7 @@ fun MainContainer() {
                 val type = backStackEntry.arguments?.getString("type") ?: ""
                 RuleEditorScreen(navController, viewModel, type)
             }
-            composable(Screen.Settings.route) { GlobalSettingsScreen(navController, viewModel) }
+            composable(Screen.Settings.route) { SettingsScreen(navController, viewModel) }
             composable(Screen.Logs.route) { LogScreen(navController, viewModel) }
         }
     }
