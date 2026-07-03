@@ -91,7 +91,7 @@ fun HomeScreen(
         item { MenuItem(Icons.Default.Settings, "设置") { navController.navigate(Screen.Settings.route) } }
         item {
             MenuItem(Icons.Default.Info, "关于") {
-                openProjectPage(context)
+                navController.navigate(Screen.About.route)
             }
         }
     }
