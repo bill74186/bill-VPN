@@ -152,7 +152,7 @@ fun AboutScreen(navController: NavController) {
                     modifier = Modifier.padding(16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("私有协议", style = MaterialTheme.typography.labelLarge, modifier = Modifier.weight(1f))
+                    Text("GPL-3.0", style = MaterialTheme.typography.labelLarge, modifier = Modifier.weight(1f))
                 }
             }
 
