@@ -32,7 +32,10 @@ import androidx.navigation.navArgument
 import com.bill.vpn.ui.ConfigViewModel
 import com.bill.vpn.ui.Screen
 import com.bill.vpn.ui.screens.*
+import com.bill.vpn.ui.theme.LocalThemePreferences
 import com.bill.vpn.ui.theme.LumineTheme
+import com.bill.vpn.ui.theme.ThemePreferences
+import com.bill.vpn.ui.theme.isAppInDarkTheme
 import mobile.Mobile
 
 class MainActivity : ComponentActivity() {
@@ -41,16 +44,19 @@ class MainActivity : ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         window.statusBarColor = android.graphics.Color.TRANSPARENT
         window.navigationBarColor = android.graphics.Color.TRANSPARENT
+        val themePreferences = ThemePreferences(this)
         setContent {
-            val isDarkTheme = isSystemInDarkTheme()
+            val isDarkTheme = isAppInDarkTheme()
             SideEffect {
                 WindowInsetsControllerCompat(window, window.decorView).apply {
                     isAppearanceLightStatusBars = !isDarkTheme
                     isAppearanceLightNavigationBars = !isDarkTheme
                 }
             }
-            LumineTheme {
-                MainContainer()
+            CompositionLocalProvider(LocalThemePreferences provides themePreferences) {
+                LumineTheme {
+                    MainContainer()
+                }
             }
         }
     }

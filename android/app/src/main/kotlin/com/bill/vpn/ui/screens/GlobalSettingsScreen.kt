@@ -11,11 +11,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.bill.vpn.ui.ConfigViewModel
+import com.bill.vpn.ui.theme.LocalThemePreferences
+import com.bill.vpn.ui.theme.ThemeMode
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GlobalSettingsScreen(navController: NavController, viewModel: ConfigViewModel) {
     val config by viewModel.currentConfig.collectAsState()
+    val themePreferences = LocalThemePreferences.current
+    val currentThemeMode by themePreferences.themeMode.collectAsState()
 
     var dnsAddr by remember { mutableStateOf(config.dnsAddr) }
     var logLevel by remember { mutableStateOf(config.logLevel) }
@@ -50,6 +54,28 @@ fun GlobalSettingsScreen(navController: NavController, viewModel: ConfigViewMode
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
         ) {
+            Text("外观", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary)
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text("主题模式", style = MaterialTheme.typography.labelLarge)
+            Spacer(modifier = Modifier.height(4.dp))
+            val themeOptions = listOf(
+                ThemeMode.Light to "日间模式",
+                ThemeMode.Dark to "夜间模式",
+                ThemeMode.System to "跟随系统"
+            )
+            themeOptions.forEach { (mode, label) ->
+                Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
+                    RadioButton(
+                        selected = (currentThemeMode == mode),
+                        onClick = { themePreferences.setThemeMode(mode) }
+                    )
+                    Text(label, modifier = Modifier.padding(start = 8.dp))
+                }
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
             Text("核心设置", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary)
             Spacer(modifier = Modifier.height(16.dp))
 

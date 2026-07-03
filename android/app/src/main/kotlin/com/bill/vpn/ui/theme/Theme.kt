@@ -1,6 +1,5 @@
 package com.bill.vpn.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
@@ -46,7 +45,7 @@ private val DarkColorScheme = darkColorScheme(
 
 @Composable
 fun LumineTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    darkTheme: Boolean = isAppInDarkTheme(),
     content: @Composable () -> Unit
 ) {
     val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
@@ -55,4 +54,14 @@ fun LumineTheme(
         colorScheme = colorScheme,
         content = content
     )
+}
+
+@Composable
+fun isAppInDarkTheme(): Boolean {
+    val mode = rememberThemeMode()
+    return when (mode) {
+        ThemeMode.Light -> false
+        ThemeMode.Dark -> true
+        ThemeMode.System -> androidx.compose.foundation.isSystemInDarkTheme()
+    }
 }
