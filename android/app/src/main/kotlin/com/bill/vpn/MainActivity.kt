@@ -46,14 +46,14 @@ class MainActivity : ComponentActivity() {
         window.navigationBarColor = android.graphics.Color.TRANSPARENT
         val themePreferences = ThemePreferences(this)
         setContent {
-            val isDarkTheme = isAppInDarkTheme()
-            SideEffect {
-                WindowInsetsControllerCompat(window, window.decorView).apply {
-                    isAppearanceLightStatusBars = !isDarkTheme
-                    isAppearanceLightNavigationBars = !isDarkTheme
-                }
-            }
             CompositionLocalProvider(LocalThemePreferences provides themePreferences) {
+                val isDarkTheme = isAppInDarkTheme()
+                SideEffect {
+                    WindowInsetsControllerCompat(window, window.decorView).apply {
+                        isAppearanceLightStatusBars = !isDarkTheme
+                        isAppearanceLightNavigationBars = !isDarkTheme
+                    }
+                }
                 LumineTheme {
                     MainContainer()
                 }
