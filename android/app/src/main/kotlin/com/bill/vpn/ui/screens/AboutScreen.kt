@@ -12,6 +12,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -47,6 +48,11 @@ fun AboutScreen(navController: NavController) {
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                    }
+                },
+                actions = {
+                    IconButton(onClick = { shareApp(context) }) {
+                        Icon(Icons.Default.Share, contentDescription = "Share")
                     }
                 }
             )
@@ -177,4 +183,14 @@ fun InfoCard(title: String, subtitle: String, onClick: () -> Unit) {
 fun openUrl(context: Context, url: String) {
     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
     context.startActivity(intent)
+}
+
+fun shareApp(context: Context) {
+    val intent = Intent(Intent.ACTION_SEND).apply {
+        type = "text/plain"
+        putExtra(Intent.EXTRA_TITLE, "Bill VPN")
+        putExtra(Intent.EXTRA_TEXT, "Bill VPN - 稳定快速的 VPN 代理服务\nhttps://github.com/bill74186/bill-VPN")
+    }
+    val chooser = Intent.createChooser(intent, "分享 Bill VPN")
+    context.startActivity(chooser)
 }
