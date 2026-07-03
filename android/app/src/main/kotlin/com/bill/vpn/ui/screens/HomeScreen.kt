@@ -56,7 +56,7 @@ fun HomeScreen(
     ) {
         item {
             Text(
-                text = "Lumine for Android",
+                text = "Bill VPN",
                 style = MaterialTheme.typography.headlineSmall,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
