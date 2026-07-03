@@ -171,6 +171,16 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
+      - name: Upload keystore artifact
+        if: env.HAS_ANDROID_KEYSTORE != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: bill-vpn-keystore-${{ steps.meta.outputs.artifact_suffix }}
+          path: |
+            ${{ runner.temp }}/release-keystore.jks
+          if-no-files-found: error
+          retention-days: 1
+
       - name: Publish GitHub release
         if: steps.meta.outputs.should_release == 'true'
         shell: bash
