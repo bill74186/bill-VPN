@@ -3,7 +3,7 @@
     <!-- Base application theme. -->
     <style name="Theme.Lumine" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Main theme colors -->
-        <item name="colorPrimary">#2196F3</item>
+        <item name="colorPrimary">#6A237C</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>

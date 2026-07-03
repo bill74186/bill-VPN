@@ -2,9 +2,9 @@ package com.moi.lumine.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val BluePrimary = Color(0xFF005AC1)
-val BlueSecondary = Color(0xFF535F70)
-val BlueTertiary = Color(0xFF6B5778)
+val PurplePrimary = Color(0xFF6A237C)
+val PurpleSecondary = Color(0xFF6B5778)
+val PurpleTertiary = Color(0xFF7D5260)
 
 val LightBackground = Color(0xFFFEFBFF)
 val LightSurface = Color(0xFFFEFBFF)
