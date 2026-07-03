@@ -54,8 +54,11 @@ android {
         applicationId "com.bill.vpn"
         minSdk 24
         targetSdk 36
-        versionCode (System.getenv("VERSION_CODE") ?: "17").toInteger()
-        versionName System.getenv("VERSION_NAME") ?: "0.1.7"
+        def versionCodeEnv = System.getenv("VERSION_CODE") ?: "17"
+        versionCode Integer.parseInt(versionCodeEnv)
+
+        def versionNameEnv = System.getenv("VERSION_NAME") ?: "0.1.7"
+        versionName versionNameEnv
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
