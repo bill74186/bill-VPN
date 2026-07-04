@@ -1,6 +1,8 @@
+<div align=center>
+
 # Bill VPN
 
-[English](./README.md)
+[English](./README.md) | **简体中文**
 
 [![License](https://img.shields.io/github/license/bill74186/bill-VPN)](https://github.com/bill74186/bill-VPN/blob/main/LICENSE)
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.2-purple?logo=kotlin&logoColor=white)](https://kotlinlang.org)
@@ -10,7 +12,9 @@
 [![Release](https://img.shields.io/github/v/release/bill74186/bill-VPN?logo=github&logoColor=white)](https://github.com/bill74186/bill-VPN/releases)
 [![CI](https://img.shields.io/github/actions/workflow/status/bill74186/bill-VPN/android-release.yml?branch=main&logo=github-actions&logoColor=white)](https://github.com/bill74186/bill-VPN/actions)
 
-Bill VPN 是一个基于 [enimul](https://github.com/lzpls/enimul) 核心的 Android VPN 代理应用，提供稳定快速的代理服务与智能分流能力。
+Bill VPN 是一个基于 [enimul](https://github.com/lzpls/enimul) 与 Lumine 核心的 Android VPN 代理应用，提供稳定快速的代理服务与智能分流能力。
+
+</div>
 
 ## 特性
 
@@ -28,20 +32,25 @@ Bill VPN 是一个基于 [enimul](https://github.com/lzpls/enimul) 核心的 And
 
 从 [GitHub Releases](https://github.com/bill74186/bill-VPN/releases/latest) 获取最新版本。
 
+> [!note]
+> 1.48 后的版本可直接在应用内检查更新并跳转网页下载
+
 ## 编译
+
+### 1. 克隆仓库
 
 ```bash
 git clone https://github.com/bill74186/bill-VPN.git
 cd bill-VPN
 ```
 
-构建 Go Mobile Core：
+### 2. 构建 Go Mobile Core：
 
 ```bash
 make android
 ```
 
-构建 Android APK：
+### 3. 构建 Android APK：
 
 ```bash
 cd android
@@ -50,9 +59,10 @@ cd android
 
 ## 上游
 
-- enimul (前身 lumine): <https://github.com/lzpls/enimul>
+- `Lumine`: <https://github.com/SniShaper/lumine-for-android>
+- `enimul` (前身 lumine): <https://github.com/lzpls/enimul>
 
-本项目使用 enimul 作为核心并进行了一部分修改。配置文件语法兼容原版。为优化移动端性能，删除原版规则部分 IP 段，并修改了分流方式。
+本项目使用 `Lumime` 的UI 与 `enimul` 的Go 作为核心并进行了一部分修改。配置文件语法兼容原版。为优化移动端性能，删除原版规则部分 IP 段，并修改了分流方式。
 
 ## 说明
 
@@ -60,4 +70,4 @@ cd android
 
 ## 开源许可
 
-[GPL-3.0](./LICENSE)
+本项目使用 GPL-3.0 开源许可证，详情请看[LICENSE](./LICENSE)。
