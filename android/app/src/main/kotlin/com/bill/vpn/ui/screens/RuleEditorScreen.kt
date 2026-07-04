@@ -83,7 +83,8 @@ fun RuleEditorScreen(navController: NavController, viewModel: ConfigViewModel, t
                     }
                 }
             )
-        }
+        },
+        contentWindowInsets = WindowInsets(0.dp)
     ) { innerPadding ->
         LazyColumn(
             modifier = Modifier

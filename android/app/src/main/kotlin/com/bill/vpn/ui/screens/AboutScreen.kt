@@ -67,7 +67,8 @@ fun AboutScreen(navController: NavController) {
                     }
                 }
             )
-        }
+        },
+        contentWindowInsets = WindowInsets(0.dp)
     ) { innerPadding ->
         Column(
             modifier = Modifier

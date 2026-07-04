@@ -51,7 +51,8 @@ fun SettingsScreen(navController: NavController, viewModel: ConfigViewModel) {
                     }
                 }
             )
-        }
+        },
+        contentWindowInsets = WindowInsets(0.dp)
     ) { innerPadding ->
         Column(
             modifier = Modifier
