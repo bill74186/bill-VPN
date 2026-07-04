@@ -53,7 +53,9 @@ class MainActivity : ComponentActivity() {
                     }
                 }
                 LumineTheme {
-                    MainContainer()
+                    Surface(modifier = Modifier.fillMaxSize()) {
+                        MainContainer()
+                    }
                 }
             }
         }
