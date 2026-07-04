@@ -24,14 +24,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.json.JSONObject
+import java.net.HttpURLConnection
+import java.net.URL
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AboutScreen(navController: NavController) {
     val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
     var appVersion by remember { mutableStateOf("1.0.0") }
     var buildNumber by remember { mutableStateOf("1") }
     var appIcon by remember { mutableStateOf<Bitmap?>(null) }
+    var updateStatus by remember { mutableStateOf("检查更新") }
+    var isChecking by remember { mutableStateOf(false) }
+    var hasUpdate by remember { mutableStateOf(false) }
+    var latestVersion by remember { mutableStateOf("") }
 
     LaunchedEffect(Unit) {
         try {
@@ -50,6 +62,49 @@ fun AboutScreen(navController: NavController) {
             appIcon = bitmap
         } catch (_: Exception) {
         }
+    }
+
+    suspend fun checkUpdate() {
+        isChecking = true
+        updateStatus = "正在检查..."
+        try {
+            val url = URL("https://api.github.com/repos/bill74186/bill-VPN/releases/latest")
+            val conn = url.openConnection() as HttpURLConnection
+            conn.requestMethod = "GET"
+            conn.connectTimeout = 5000
+            conn.readTimeout = 5000
+            conn.setRequestProperty("Accept", "application/json")
+
+            val response = conn.inputStream.bufferedReader().readText()
+            val json = JSONObject(response)
+            val tagName = json.getString("tag_name")
+            latestVersion = tagName.removePrefix("v")
+
+            if (compareVersions(latestVersion, appVersion) > 0) {
+                hasUpdate = true
+                updateStatus = "发现新版本 v$latestVersion"
+            } else {
+                hasUpdate = false
+                updateStatus = "已是最新版本"
+            }
+        } catch (e: Exception) {
+            updateStatus = "检查失败"
+        } finally {
+            isChecking = false
+        }
+    }
+
+    fun compareVersions(v1: String, v2: String): Int {
+        val parts1 = v1.split(".")
+        val parts2 = v2.split(".")
+        val maxLength = maxOf(parts1.size, parts2.size)
+        for (i in 0 until maxLength) {
+            val p1 = if (i < parts1.size) parts1[i].toIntOrNull() ?: 0 else 0
+            val p2 = if (i < parts2.size) parts2[i].toIntOrNull() ?: 0 else 0
+            if (p1 > p2) return 1
+            if (p1 < p2) return -1
+        }
+        return 0
     }
 
     Scaffold(
@@ -146,6 +201,20 @@ fun AboutScreen(navController: NavController) {
                 title = "开源许可",
                 subtitle = "GPL-3.0 | License",
                 onClick = { openUrl(context, "https://github.com/bill74186/bill-VPN/blob/main/LICENSE") }
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            InfoCard(
+                title = "检查更新",
+                subtitle = updateStatus,
+                onClick = {
+                    if (hasUpdate) {
+                        openUrl(context, "https://github.com/bill74186/bill-VPN/releases/latest")
+                    } else if (!isChecking) {
+                        coroutineScope.launch { checkUpdate() }
+                    }
+                }
             )
 
             Spacer(modifier = Modifier.weight(1f))
