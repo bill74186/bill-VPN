@@ -2,6 +2,7 @@ package com.bill.vpn.ui.screens
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -16,14 +17,13 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.bill.vpn.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,12 +31,23 @@ fun AboutScreen(navController: NavController) {
     val context = LocalContext.current
     var appVersion by remember { mutableStateOf("1.0.0") }
     var buildNumber by remember { mutableStateOf("1") }
+    var appIcon by remember { mutableStateOf<Bitmap?>(null) }
 
     LaunchedEffect(Unit) {
         try {
             val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
             appVersion = packageInfo.versionName ?: "1.0.0"
             buildNumber = packageInfo.versionCode.toString()
+            val drawable = context.packageManager.getApplicationIcon(context.packageName)
+            val bitmap = android.graphics.Bitmap.createBitmap(
+                drawable.intrinsicWidth,
+                drawable.intrinsicHeight,
+                android.graphics.Bitmap.Config.ARGB_8888
+            )
+            val canvas = android.graphics.Canvas(bitmap)
+            drawable.setBounds(0, 0, canvas.width, canvas.height)
+            drawable.draw(canvas)
+            appIcon = bitmap
         } catch (_: Exception) {
         }
     }
@@ -77,12 +88,14 @@ fun AboutScreen(navController: NavController) {
                         .padding(32.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Image(
-                        painter = painterResource(id = R.mipmap.ic_launcher),
-                        contentDescription = null,
-                        modifier = Modifier.size(100.dp),
-                        contentScale = ContentScale.Fit
-                    )
+                    appIcon?.let {
+                        Image(
+                            bitmap = it.asImageBitmap(),
+                            contentDescription = null,
+                            modifier = Modifier.size(100.dp),
+                            contentScale = ContentScale.Fit
+                        )
+                    }
 
                     Spacer(modifier = Modifier.height(16.dp))
 
