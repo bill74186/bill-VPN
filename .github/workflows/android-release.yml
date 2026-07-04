@@ -213,6 +213,6 @@ jobs:
           else
             gh release create "$tag" release-assets/* \
               --title "$title" \
-              --body "$body" \
+              -n "$body" \
               --target "$GITHUB_SHA"
           fi
