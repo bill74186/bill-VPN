@@ -57,7 +57,7 @@ android {
         def versionCodeEnv = System.getenv("VERSION_CODE") ?: "17"
         versionCode Integer.parseInt(versionCodeEnv)
 
-        def versionNameEnv = System.getenv("VERSION_NAME") ?: "0.1.7"
+        def versionNameEnv = System.getenv("VERSION_NAME") ?: "1.0"
         versionName versionNameEnv
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

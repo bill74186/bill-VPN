@@ -128,7 +128,7 @@ jobs:
           ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
           VERSION_CODE: ${{ github.run_number }}
-          VERSION_NAME: ${{ github.ref_type == 'tag' && github.ref_name || format('1.0.{0}', github.run_number) }}
+          VERSION_NAME: ${{ github.ref_type == 'tag' && github.ref_name || format('1.{0}', github.run_number) }}
         run: |
           echo "VERSION_CODE=$VERSION_CODE"
           echo "VERSION_NAME=$VERSION_NAME"
