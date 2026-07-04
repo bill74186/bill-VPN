@@ -245,6 +245,9 @@ fun MenuItem(icon: ImageVector, title: String, onClick: () -> Unit) {
     ListItem(
         headlineContent = { Text(title) },
         leadingContent = { Icon(icon, contentDescription = null) },
+        colors = ListItemDefaults.colors(
+            containerColor = MaterialTheme.colorScheme.surface
+        ),
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onClick() }
