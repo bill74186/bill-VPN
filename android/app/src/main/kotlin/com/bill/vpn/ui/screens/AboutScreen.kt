@@ -143,7 +143,7 @@ fun AboutScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(8.dp))
 
             InfoCard(
-                title = "许可证",
+                title = "开源许可",
                 subtitle = "GPL-3.0 | License",
                 onClick = { openUrl(context, "https://github.com/bill74186/bill-VPN/blob/main/LICENSE") }
             )
