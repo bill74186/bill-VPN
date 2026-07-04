@@ -158,7 +158,6 @@ fun MainContainer() {
             composable(Screen.Logs.route) { LogScreen(navController, viewModel) }
             composable(Screen.About.route) { AboutScreen(navController) }
         }
-    }
 }
 
 @Composable
