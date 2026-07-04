@@ -1,8 +1,6 @@
 package com.bill.vpn.ui.screens
 
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.core.animateFloatAsState
@@ -257,29 +255,4 @@ private fun statusContentTransform(): ContentTransform {
         slideInVertically(animationSpec = tween(durationMillis = duration)) { it / 3 }) togetherWith
         (fadeOut(animationSpec = tween(durationMillis = duration)) +
             slideOutVertically(animationSpec = tween(durationMillis = duration)) { -it / 4 })
-}
-
-private fun openProjectPage(context: Context) {
-    val uri = Uri.parse("https://github.com/bill74186/bill-VPN")
-    val baseIntent = Intent(Intent.ACTION_VIEW, uri).apply {
-        addCategory(Intent.CATEGORY_BROWSABLE)
-        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-    }
-    val packageManager = context.packageManager
-    val candidates = packageManager.queryIntentActivities(baseIntent, 0)
-        .map { it.activityInfo.packageName }
-        .distinct()
-        .filter { it != context.packageName }
-
-    val intent = Intent(baseIntent)
-    val resolved = baseIntent.resolveActivity(packageManager)?.packageName
-    val preferredPackage = when {
-        resolved != null && resolved != context.packageName -> resolved
-        candidates.isNotEmpty() -> candidates.first()
-        else -> null
-    }
-    if (preferredPackage != null) {
-        intent.setPackage(preferredPackage)
-    }
-    runCatching { context.startActivity(intent) }
 }
