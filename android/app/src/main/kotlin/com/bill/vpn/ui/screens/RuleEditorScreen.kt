@@ -32,18 +32,21 @@ fun RuleEditorScreen(navController: NavController, viewModel: ConfigViewModel, t
         return
     }
 
+    // 将 nullable 的 delegated 属性拷贝为局部的非空稳定引用，避免编译器报 smart-cast/可空性错误
+    val key = ruleKey!!
+
     val existingPolicy = if (type == "domain") {
-        config.domainPolicies[ruleKey]
+        config.domainPolicies[key]
     } else {
-        config.ipPolicies[ruleKey]
+        config.ipPolicies[key]
     }
     val isNewRule = existingPolicy == null
     val initialPolicy = existingPolicy ?: Policy()
 
-    var mode by remember(ruleKey, initialPolicy) { mutableStateOf(initialPolicy.mode ?: "tls-rf") }
-    var host by remember(ruleKey, initialPolicy) { mutableStateOf(initialPolicy.host ?: "") }
-    var mapTo by remember(ruleKey, initialPolicy) { mutableStateOf(initialPolicy.mapTo ?: "") }
-    var tls13Only by remember(ruleKey, initialPolicy) { mutableStateOf(initialPolicy.tls13Only ?: false) }
+    var mode by remember(key, initialPolicy) { mutableStateOf(initialPolicy.mode ?: "tls-rf") }
+    var host by remember(key, initialPolicy) { mutableStateOf(initialPolicy.host ?: "") }
+    var mapTo by remember(key, initialPolicy) { mutableStateOf(initialPolicy.mapTo ?: "") }
+    var tls13Only by remember(key, initialPolicy) { mutableStateOf(initialPolicy.tls13Only ?: false) }
 
     Scaffold(
         topBar = {
@@ -70,9 +73,9 @@ fun RuleEditorScreen(navController: NavController, viewModel: ConfigViewModel, t
                             tls13Only = tls13Only
                         )
                         val updatedConfig = if (type == "domain") {
-                            config.copy(domainPolicies = config.domainPolicies + (ruleKey to updatedPolicy))
+                            config.copy(domainPolicies = config.domainPolicies + (key to updatedPolicy))
                         } else {
-                            config.copy(ipPolicies = config.ipPolicies + (ruleKey to updatedPolicy))
+                            config.copy(ipPolicies = config.ipPolicies + (key to updatedPolicy))
                         }
                         viewModel.updateConfig(updatedConfig)
                         viewModel.saveConfig()
@@ -93,7 +96,7 @@ fun RuleEditorScreen(navController: NavController, viewModel: ConfigViewModel, t
         ) {
             item {
                 Text("规则路径", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
-                Text(ruleKey, style = MaterialTheme.typography.bodyLarge)
+                Text(key, style = MaterialTheme.typography.bodyLarge)
                 Spacer(modifier = Modifier.height(24.dp))
             }
 
