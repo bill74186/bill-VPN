@@ -1,52 +1,55 @@
-# lumine-mobile
+# Bill VPN
 
-[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on-zh-cn.png" alt="Get it on F-Droid" height="75">](https://f-droid.org/packages/com.moi.lumine)
+[English](./README.md)
 
-`lumine-mobile` 是 [enimul](https://github.com/lzpls/enimul) (前 [lumine](https://codeberg.org/PonyCW26/lumine)) 在 Android 平台上的 Clash 风格实现。
-
-它基于 `enimul` 的核心，结合 Android `VPN/TUN` 方案与移动端界面，提供更贴近 Clash 的使用体验，以及更智能的分流与规则管理能力。
-你也可以将其看作[SniShaper](https://github.com/coolapijust/SniShaper)在移动端的功能扩展。
+Bill VPN 是一个基于 [enimul](https://github.com/lzpls/enimul) 核心的 Android VPN 代理应用，提供稳定快速的代理服务与智能分流能力。
 
 ## 特性
 
-- Android 原生实现，kotlin+gomobile，面向移动端
-- 基于 `enimul` 核心的代理与分流方案
+- Android 原生实现，Kotlin + gomobile
+- 基于 enimul 核心的代理与分流方案
 - Clash 风格的配置管理界面
 - 支持订阅 URL 拉取配置并切换规则
 - 独立的规则页面，可查看、编辑和新建规则
-- 将工作模式改为基于GFWlist的黑名单驱动，分流更智能
-- 灵活的Fake ip实现
+- 基于 GFWlist 的黑名单驱动分流
+- 灵活的 Fake IP 实现
+- 支持日间/夜间/跟随系统主题模式
+- 应用内检查更新
 
-## 上游
+## 下载
 
-- enimul: <https://github.com/lzpls/enimul>
-
-使用了enimul作为核心，并进行了一部分修改；部分模式可能工作不稳定。配置文件语法兼容原版。为优化移动端性能，删除原版规则部分ip段，并修改了分流方式。
+从 [GitHub Releases](https://github.com/bill74186/bill-VPN/releases/latest) 获取最新版本。
 
 ## 编译
 
 ```bash
-git clone https://github.com/coolapijust/lumine-for-android
-cd lumine-for-android
+git clone https://github.com/bill74186/bill-VPN.git
+cd bill-VPN
 ```
 
-Android APK 构建：
+构建 Go Mobile Core：
+
+```bash
+make android
+```
+
+构建 Android APK：
 
 ```bash
 cd android
 ./gradlew assembleDebug
 ```
 
-Go Mobile Core 构建：
+## 上游
 
-```bash
-make android
-```
+- enimul (前身 lumine): <https://github.com/lzpls/enimul>
+
+本项目使用 enimul 作为核心并进行了一部分修改。配置文件语法兼容原版。为优化移动端性能，删除原版规则部分 IP 段，并修改了分流方式。
 
 ## 说明
 
-本项目不是上游 `enimul` 官方仓库，而是面向 Android 平台的实现与适配版本。目前处于早期阶段，部分网站可能工作不稳定，欢迎提出反馈。
+本项目不是上游 enimul 官方仓库，而是面向 Android 平台的实现与适配版本。
 
 ## 开源许可
 
-GPLv3
+[GPL-3.0](./LICENSE)
