@@ -15,14 +15,19 @@
         android:theme="@style/Theme.BillVPN">
         
         <activity
-            android:name=".MainActivity"
+            android:name=".SplashActivity"
             android:exported="true"
-            android:theme="@style/Theme.BillVPN">
+            android:theme="@style/Theme.BillVPN.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:theme="@style/Theme.BillVPN" />
 
         <service
             android:name=".BillVpnService"
