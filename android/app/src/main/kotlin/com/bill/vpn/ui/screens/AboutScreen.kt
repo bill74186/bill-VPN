@@ -68,17 +68,21 @@ fun AboutScreen(navController: NavController) {
         isChecking = true
         updateStatus = "正在检查..."
         try {
-            val url = URL("https://api.github.com/repos/bill74186/bill-VPN/releases/latest")
-            val conn = url.openConnection() as HttpURLConnection
-            conn.requestMethod = "GET"
-            conn.connectTimeout = 5000
-            conn.readTimeout = 5000
-            conn.setRequestProperty("Accept", "application/json")
+            val result = withContext(Dispatchers.IO) {
+                val url = URL("https://api.github.com/repos/bill74186/bill-VPN/releases/latest")
+                val conn = url.openConnection() as HttpURLConnection
+                conn.requestMethod = "GET"
+                conn.connectTimeout = 10000
+                conn.readTimeout = 10000
+                conn.setRequestProperty("Accept", "application/json")
+                conn.setRequestProperty("User-Agent", "Bill-VPN-Android")
 
-            val response = conn.inputStream.bufferedReader().readText()
-            val json = JSONObject(response)
-            val tagName = json.getString("tag_name")
-            latestVersion = tagName.removePrefix("v")
+                val response = conn.inputStream.bufferedReader().readText()
+                val json = JSONObject(response)
+                val tagName = json.getString("tag_name")
+                tagName.removePrefix("v")
+            }
+            latestVersion = result
 
             if (compareVersions(latestVersion, appVersion) > 0) {
                 hasUpdate = true
@@ -88,7 +92,7 @@ fun AboutScreen(navController: NavController) {
                 updateStatus = "已是最新版本"
             }
         } catch (e: Exception) {
-            updateStatus = "检查失败"
+            updateStatus = "检查失败: ${e.message}"
         } finally {
             isChecking = false
         }
