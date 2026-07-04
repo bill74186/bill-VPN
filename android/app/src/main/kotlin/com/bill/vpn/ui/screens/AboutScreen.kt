@@ -40,7 +40,7 @@ fun AboutScreen(navController: NavController) {
     var appVersion by remember { mutableStateOf("1.0.0") }
     var buildNumber by remember { mutableStateOf("1") }
     var appIcon by remember { mutableStateOf<Bitmap?>(null) }
-    var updateStatus by remember { mutableStateOf("检查更新") }
+    var updateStatus by remember { mutableStateOf("点击检查 | Releases") }
     var isChecking by remember { mutableStateOf(false) }
     var hasUpdate by remember { mutableStateOf(false) }
     var latestVersion by remember { mutableStateOf("") }
