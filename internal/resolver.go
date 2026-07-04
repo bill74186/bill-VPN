@@ -1,4 +1,4 @@
-package lumine
+package bill
 
 type Resolver interface {
 	Resolve(domain string, dnsMode DNSMode) (ip string, cached bool, err error)

@@ -1,6 +1,6 @@
 //go:build unix
 
-package lumine
+package bill
 
 import (
 	"net"

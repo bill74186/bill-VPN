@@ -4,11 +4,11 @@ import (
 	"flag"
 	"fmt"
 
-	lumine "github.com/moi-si/lumine/internal"
+	bill "github.com/moi-si/bill/internal"
 )
 
 func main() {
-	fmt.Println("moi-si/lumine v0.7.9")
+	fmt.Println("moi-si/bill v0.7.9")
 	fmt.Println("")
 	flag.Usage = func() {
 		flag.PrintDefaults()
@@ -18,14 +18,14 @@ func main() {
 	hAddr := flag.String("hb", "", "HTTP bind address (default: address from config file)")
 	flag.Parse()
 
-	socks5Addr, httpAddr, err := lumine.LoadConfig(*configPath)
+	socks5Addr, httpAddr, err := bill.LoadConfig(*configPath)
 	if err != nil {
 		fmt.Println("Failed to load config:", err)
 		return
 	}
 
 	done := make(chan struct{})
-	go lumine.SOCKS5Accept(addr, socks5Addr, done)
-	go lumine.HTTPAccept(hAddr, httpAddr, done)
+	go bill.SOCKS5Accept(addr, socks5Addr, done)
+	go bill.HTTPAccept(hAddr, httpAddr, done)
 	select {}
 }

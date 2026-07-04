@@ -8,7 +8,7 @@ import (
 	"strings"
 	"sync"
 
-	lumine "github.com/moi-si/lumine/internal"
+	bill "github.com/moi-si/bill/internal"
 
 	log "github.com/moi-si/mylog"
 	"github.com/xjasonlyu/tun2socks/v2/engine"
@@ -75,8 +75,8 @@ func SetWorkingDir(dir string) {
 	workingDir = dir
 }
 
-// StartLumine 指定配置名启动核心和 tun2socks
-func StartLumine(fd int, configName string) string {
+// StartBill 指定配置名启动核心和 tun2socks
+func StartBill(fd int, configName string) string {
 	mu.Lock()
 	defer mu.Unlock()
 
@@ -92,18 +92,18 @@ func StartLumine(fd int, configName string) string {
 	logMu.Unlock()
 
 	// Initialize logging redirection
-	mainLogger.Info("Lumine mobile starting...")
-	lumine.SetLogWriter(&LogWriter{})
+	mainLogger.Info("Bill mobile starting...")
+	bill.SetLogWriter(&LogWriter{})
 
 	configPath := filepath.Join(workingDir, configName+".json")
 
 
-	_, _, err := lumine.LoadConfig(configPath)
+	_, _, err := bill.LoadConfig(configPath)
 	if err != nil {
 		return fmt.Sprintf("load config error: %v", err)
 	}
 
-	engine.SetCustomProxy(&LumineProxy{})
+	engine.SetCustomProxy(&BillProxy{})
 
 	engine.Insert(&engine.Key{
 		Device:   fmt.Sprintf("fd://%d", fd),
@@ -119,8 +119,8 @@ func StartLumine(fd int, configName string) string {
 	return ""
 }
 
-// StopLumine 停止服务
-func StopLumine() {
+// StopBill 停止服务
+func StopBill() {
 	mu.Lock()
 	defer mu.Unlock()
 
@@ -131,7 +131,7 @@ func StopLumine() {
 	_ = engine.StopErr()
 	engine.ClearCustomProxy()
 	isRunning = false
-	lumine.SetLogWriter(nil)
+	bill.SetLogWriter(nil)
 }
 
 // IsRunning 返回核心当前是否正在运行。
@@ -141,9 +141,9 @@ func IsRunning() bool {
 	return isRunning
 }
 
-// CheckConfig 验证 JSON 语法与 Lumine 规则合法性
+// CheckConfig 验证 JSON 语法与 Bill 规则合法性
 func CheckConfig(jsonContent string) string {
-	var conf lumine.Config
+	var conf bill.Config
 	if err := json.Unmarshal([]byte(jsonContent), &conf); err != nil {
 		return fmt.Sprintf("invalid json: %v", err)
 	}

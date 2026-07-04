@@ -1,6 +1,6 @@
 //go:build android && arm64
 
-package lumine
+package bill
 
 import (
 	"os/exec"

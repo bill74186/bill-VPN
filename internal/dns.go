@@ -1,4 +1,4 @@
-package lumine
+package bill
 
 import (
 	"encoding/base64"

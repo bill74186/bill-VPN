@@ -44,7 +44,7 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 @Composable
-fun LumineTheme(
+fun BillVpnTheme(
     darkTheme: Boolean = isAppInDarkTheme(),
     content: @Composable () -> Unit
 ) {

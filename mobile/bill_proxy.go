@@ -9,41 +9,41 @@ import (
 	"time"
 
 	"github.com/miekg/dns"
-	lumine "github.com/moi-si/lumine/internal"
+	bill "github.com/moi-si/bill/internal"
 	log "github.com/moi-si/mylog"
 	"github.com/xjasonlyu/tun2socks/v2/metadata"
 	"github.com/xjasonlyu/tun2socks/v2/proxy/proto"
 )
 
-type LumineProxy struct{}
+type BillProxy struct{}
 
 var (
 	tcpDialID uint32
 	udpDialID uint32
 )
 
-func (p *LumineProxy) Addr() string {
-	return "lumine"
+func (p *BillProxy) Addr() string {
+	return "bill"
 }
 
-func (p *LumineProxy) Proto() proto.Proto {
+func (p *BillProxy) Proto() proto.Proto {
 	return proto.Direct
 }
 
-func (p *LumineProxy) DialContext(ctx context.Context, m *metadata.Metadata) (net.Conn, error) {
+func (p *BillProxy) DialContext(ctx context.Context, m *metadata.Metadata) (net.Conn, error) {
 	if m == nil || !m.DstIP.IsValid() {
 		return nil, fmt.Errorf("invalid tcp metadata: %+v", m)
 	}
 
 	originHost := m.DstIP.String()
-	logger := lumine.NewSessionLogger(fmt.Sprintf("[T%05x]", nextID(&tcpDialID)))
-	if lumine.IsVPNDNSAddress(originHost, int(m.DstPort)) {
+	logger := bill.NewSessionLogger(fmt.Sprintf("[T%05x]", nextID(&tcpDialID)))
+	if bill.IsVPNDNSAddress(originHost, int(m.DstPort)) {
 		logger.Debug("Hijacking TCP DNS for", net.JoinHostPort(originHost, fmt.Sprintf("%d", m.DstPort)))
 		return newLocalDNSTCPConn(logger)
 	}
 
-	plan, err := lumine.PlanRequest(lumine.RequestContext{
-		Source: lumine.RequestSourceMobile,
+	plan, err := bill.PlanRequest(bill.RequestContext{
+		Source: bill.RequestSourceMobile,
 		Host:   originHost,
 		Port:   int(m.DstPort),
 	}, logger)
@@ -57,7 +57,7 @@ func (p *LumineProxy) DialContext(ctx context.Context, m *metadata.Metadata) (ne
 	}
 
 	target := plan.TargetAddress()
-	dialer := &net.Dialer{Timeout: lumine.DefaultDialTimeout(plan.Policy)}
+	dialer := &net.Dialer{Timeout: bill.DefaultDialTimeout(plan.Policy)}
 	conn, err := dialer.DialContext(ctx, "tcp", target)
 	if err != nil {
 		logger.Error("Connection failed:", err)
@@ -66,38 +66,38 @@ func (p *LumineProxy) DialContext(ctx context.Context, m *metadata.Metadata) (ne
 
 	logDialPlan(logger, "TCP", plan, target)
 	switch plan.Policy.Mode {
-	case lumine.ModeTTLD:
+	case bill.ModeTTLD:
 		logger.Info("Downgrading ttl-d to raw in direct bridge for stability")
 		return conn, nil
 	default:
-		return lumine.WrapTCPConn(conn, plan, logger), nil
+		return bill.WrapTCPConn(conn, plan, logger), nil
 	}
 }
 
-func (p *LumineProxy) DialUDP(m *metadata.Metadata) (net.PacketConn, error) {
-	logger := lumine.NewSessionLogger(fmt.Sprintf("[U%05x]", nextID(&udpDialID)))
+func (p *BillProxy) DialUDP(m *metadata.Metadata) (net.PacketConn, error) {
+	logger := bill.NewSessionLogger(fmt.Sprintf("[U%05x]", nextID(&udpDialID)))
 	if m == nil || !m.DstIP.IsValid() {
 		logger.Error("Invalid UDP metadata:", m)
 		return nil, fmt.Errorf("invalid udp metadata: %+v", m)
 	}
-	pc, err := lumine.NewDirectPacketConn(30 * time.Second)
+	pc, err := bill.NewDirectPacketConn(30 * time.Second)
 	if err != nil {
 		logger.Error("Open UDP packet conn:", err)
 		return nil, err
 	}
 	logger.Debug("UDP relay ready for", m.DestinationAddress())
-	return &luminePacketConn{
+	return &billPacketConn{
 		PacketConn: newQueuedPacketConn(pc),
 		logger:     logger,
 	}, nil
 }
 
-type luminePacketConn struct {
+type billPacketConn struct {
 	net.PacketConn
 	logger *log.Logger
 }
 
-func (pc *luminePacketConn) WriteTo(b []byte, addr net.Addr) (int, error) {
+func (pc *billPacketConn) WriteTo(b []byte, addr net.Addr) (int, error) {
 	udpAddr, ok := addr.(*net.UDPAddr)
 	if !ok {
 		var err error
@@ -115,13 +115,13 @@ func (pc *luminePacketConn) WriteTo(b []byte, addr net.Addr) (int, error) {
 		return 0, fmt.Errorf("invalid udp destination: %v", addr)
 	}
 
-	if lumine.IsVPNDNSAddress(dstIP.String(), udpAddr.Port) {
+	if bill.IsVPNDNSAddress(dstIP.String(), udpAddr.Port) {
 		return pc.handleDNSQuery(b, udpAddr)
 	}
 
 	originHost := dstIP.String()
-	plan, err := lumine.PlanRequest(lumine.RequestContext{
-		Source: lumine.RequestSourceMobile,
+	plan, err := bill.PlanRequest(bill.RequestContext{
+		Source: bill.RequestSourceMobile,
 		Host:   originHost,
 		Port:   udpAddr.Port,
 	}, pc.logger)
@@ -140,9 +140,9 @@ func (pc *luminePacketConn) WriteTo(b []byte, addr net.Addr) (int, error) {
 	return pc.PacketConn.WriteTo(b, dst)
 }
 
-func (pc *luminePacketConn) handleDNSQuery(payload []byte, addr *net.UDPAddr) (int, error) {
+func (pc *billPacketConn) handleDNSQuery(payload []byte, addr *net.UDPAddr) (int, error) {
 	pc.logger.Debug("DNS hijack recv:", summarizeDNSPacket(payload))
-	resp, err := lumine.HandleDNSQueryPacket(payload)
+	resp, err := bill.HandleDNSQueryPacket(payload)
 	if err != nil {
 		pc.logger.Error("Handle hijacked DNS query:", err)
 		return 0, err
@@ -160,21 +160,21 @@ func (pc *luminePacketConn) handleDNSQuery(payload []byte, addr *net.UDPAddr) (i
 	return len(payload), nil
 }
 
-func logDialPlan(logger *log.Logger, network string, plan lumine.DialPlan, target string) {
+func logDialPlan(logger *log.Logger, network string, plan bill.DialPlan, target string) {
 	if !plan.MatchedDomain && !plan.MatchedIP && !plan.Blocked {
 		return
 	}
 
 	message := joinPlanLogMessage(network, plan, target)
 	switch plan.Policy.Mode {
-	case lumine.ModeDirect, lumine.ModeRaw:
+	case bill.ModeDirect, bill.ModeRaw:
 		logger.Debug(message)
 	default:
 		logger.Info(message)
 	}
 }
 
-func joinPlanLogMessage(network string, plan lumine.DialPlan, target string) string {
+func joinPlanLogMessage(network string, plan bill.DialPlan, target string) string {
 	origin := plan.OriginAddress()
 	if plan.RecoveredDomain != "" {
 		origin = plan.RecoveredDomain

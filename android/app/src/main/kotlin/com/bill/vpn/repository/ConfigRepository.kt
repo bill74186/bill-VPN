@@ -4,7 +4,7 @@ import android.content.Context
 import android.net.Uri
 import androidx.core.content.FileProvider
 import com.bill.vpn.VpnStatus
-import com.bill.vpn.model.LumineConfig
+import com.bill.vpn.model.BillVpnConfig
 import com.bill.vpn.model.SubscriptionProfile
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
@@ -25,13 +25,13 @@ class ConfigRepository(private val context: Context) {
         .add(KotlinJsonAdapterFactory())
         .build()
 
-    private val adapter = moshi.adapter(LumineConfig::class.java).indent("    ")
+    private val adapter = moshi.adapter(BillVpnConfig::class.java).indent("    ")
     private val subscriptionListAdapter = moshi.adapter<List<SubscriptionProfile>>(
         Types.newParameterizedType(List::class.java, SubscriptionProfile::class.java)
     ).indent("    ")
     private val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
-    suspend fun loadConfig(name: String): LumineConfig? = withContext(Dispatchers.IO) {
+    suspend fun loadConfig(name: String): BillVpnConfig? = withContext(Dispatchers.IO) {
         try {
             val file = File(context.filesDir, "$name.json")
             if (!file.exists()) {
@@ -43,9 +43,9 @@ class ConfigRepository(private val context: Context) {
                     }
 
                     val config = if (assetJson != null) {
-                        adapter.fromJson(assetJson) ?: LumineConfig()
+                        adapter.fromJson(assetJson) ?: BillVpnConfig()
                     } else {
-                        LumineConfig()
+                        BillVpnConfig()
                     }
                     saveConfig("config", config)
                     return@withContext config
@@ -59,7 +59,7 @@ class ConfigRepository(private val context: Context) {
         }
     }
 
-    suspend fun saveConfig(name: String, config: LumineConfig) = withContext(Dispatchers.IO) {
+    suspend fun saveConfig(name: String, config: BillVpnConfig) = withContext(Dispatchers.IO) {
         try {
             val file = File(context.filesDir, "$name.json")
             file.writeText(adapter.toJson(config))
@@ -127,7 +127,7 @@ class ConfigRepository(private val context: Context) {
     suspend fun downloadConfig(
         url: String,
         onStatus: (DownloadStatus) -> Unit = {}
-    ): LumineConfig = withContext(Dispatchers.IO) {
+    ): BillVpnConfig = withContext(Dispatchers.IO) {
         onStatus(DownloadStatus(DownloadPhase.Connecting))
         val connection = (URL(url).openConnection() as HttpURLConnection).apply {
             connectTimeout = 15000
@@ -135,7 +135,7 @@ class ConfigRepository(private val context: Context) {
             instanceFollowRedirects = true
             requestMethod = "GET"
             setRequestProperty("Accept", "application/json, text/plain, */*")
-            setRequestProperty("User-Agent", "LumineAndroid/1.0")
+            setRequestProperty("User-Agent", "BillVpnAndroid/1.0")
         }
 
         try {
@@ -177,7 +177,7 @@ class ConfigRepository(private val context: Context) {
             )
             val body = output.toString(Charsets.UTF_8.name())
             return@withContext adapter.fromJson(body)
-                ?: throw IllegalArgumentException("订阅内容不是有效的 Lumine 配置 JSON")
+                ?: throw IllegalArgumentException("订阅内容不是有效的 Bill VPN 配置 JSON")
         } finally {
             connection.disconnect()
         }
@@ -220,11 +220,11 @@ class ConfigRepository(private val context: Context) {
         val now = Date()
         val stamp = SimpleDateFormat("yyyyMMdd-HHmmss-SSS", Locale.US).format(now)
         val exportedAt = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(now)
-        val fileName = "lumine-log-$stamp.txt"
+        val fileName = "billvpn-log-$stamp.txt"
         val file = File(exportDir, fileName)
 
         val body = buildString {
-            appendLine("Lumine Log Export")
+            appendLine("Bill VPN Log Export")
             appendLine("Exported-At: $exportedAt")
             appendLine("Selected-Config: $selectedConfigName")
             appendLine("VPN-Phase: ${status.phase}")
@@ -249,7 +249,7 @@ class ConfigRepository(private val context: Context) {
     }
 
     companion object {
-        private const val PREFS_NAME = "lumine_prefs"
+        private const val PREFS_NAME = "billvpn_prefs"
         private const val KEY_SELECTED_CONFIG = "selected_config_name"
         private const val KEY_SUBSCRIPTIONS = "subscriptions_json"
         private const val KEY_VPN_SHOULD_RUN = "vpn_should_run"

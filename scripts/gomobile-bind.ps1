@@ -1,7 +1,7 @@
 param(
     [string]$AndroidHome = "D:\Android\Sdk",
     [string]$JavaHome = "D:\Android\jbr",
-    [string]$Output = "android\libs\LumineCore.aar",
+    [string]$Output = "android\libs\BillCore.aar",
     [int]$AndroidApi = 24,
     [string]$Package = "./mobile"
 )

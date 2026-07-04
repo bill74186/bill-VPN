@@ -1,6 +1,6 @@
 //go:build !windows && !linux
 
-package lumine
+package bill
 
 import (
 	"errors"

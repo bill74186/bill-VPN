@@ -120,8 +120,8 @@ fun LogScreen(navController: NavController, viewModel: ConfigViewModel) {
             val shareIntent = Intent(Intent.ACTION_SEND).apply {
                 type = "text/plain"
                 putExtra(Intent.EXTRA_STREAM, payload.uri)
-                putExtra(Intent.EXTRA_SUBJECT, "Lumine 日志 ${payload.fileName}")
-                putExtra(Intent.EXTRA_TEXT, "Lumine 导出日志: ${payload.fileName}")
+                putExtra(Intent.EXTRA_SUBJECT, "Bill VPN 日志 ${payload.fileName}")
+                putExtra(Intent.EXTRA_TEXT, "Bill VPN 导出日志: ${payload.fileName}")
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             }
             context.startActivity(Intent.createChooser(shareIntent, "导出日志"))

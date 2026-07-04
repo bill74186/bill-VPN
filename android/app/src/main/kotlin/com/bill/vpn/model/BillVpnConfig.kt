@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class LumineConfig(
+data class BillVpnConfig(
     @Json(name = "log_level") val logLevel: String = "INFO",
     @Json(name = "socks5_address") val socks5Address: String = "127.0.0.1:1080",
     @Json(name = "http_address") val httpAddress: String = "127.0.0.1:1225",

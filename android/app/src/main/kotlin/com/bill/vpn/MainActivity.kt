@@ -31,7 +31,7 @@ import com.bill.vpn.ui.ConfigViewModel
 import com.bill.vpn.ui.Screen
 import com.bill.vpn.ui.screens.*
 import com.bill.vpn.ui.theme.LocalThemePreferences
-import com.bill.vpn.ui.theme.LumineTheme
+import com.bill.vpn.ui.theme.BillVpnTheme
 import com.bill.vpn.ui.theme.ThemePreferences
 import com.bill.vpn.ui.theme.isAppInDarkTheme
 import mobile.Mobile
@@ -52,7 +52,7 @@ class MainActivity : ComponentActivity() {
                         isAppearanceLightNavigationBars = !isDarkTheme
                     }
                 }
-                LumineTheme {
+                BillVpnTheme {
                     Surface(modifier = Modifier.fillMaxSize()) {
                         MainContainer()
                     }
@@ -83,7 +83,7 @@ fun MainContainer() {
     ) { result ->
         if (result.resultCode == ComponentActivity.RESULT_OK) {
             VpnRuntimeState.setStatus("starting", "权限已授予，正在启动服务")
-            val intent = Intent(context, LumineVpnService::class.java).apply {
+            val intent = Intent(context, BillVpnService::class.java).apply {
                 putExtra("CONFIG_NAME", viewModel.selectedConfigName.value)
             }
             ContextCompat.startForegroundService(context, intent)
@@ -106,7 +106,7 @@ fun MainContainer() {
             vpnRequestLauncher.launch(vpnIntent)
         } else {
             VpnRuntimeState.setStatus("starting", "正在启动服务")
-            val intent = Intent(context, LumineVpnService::class.java).apply {
+            val intent = Intent(context, BillVpnService::class.java).apply {
                 putExtra("CONFIG_NAME", viewModel.selectedConfigName.value)
             }
             ContextCompat.startForegroundService(context, intent)
@@ -121,7 +121,7 @@ fun MainContainer() {
         toggleLocked = true
         lastToggleAt = now
         VpnRuntimeState.setStatus("stopping", "正在停止代理")
-        val intent = Intent(context, LumineVpnService::class.java).apply {
+        val intent = Intent(context, BillVpnService::class.java).apply {
             action = "STOP"
         }
         runCatching {
@@ -176,7 +176,7 @@ fun TestScreen(onStart: () -> Unit) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Lumine Mobile", style = MaterialTheme.typography.headlineMedium)
+        Text(text = "Bill VPN", style = MaterialTheme.typography.headlineMedium)
         Spacer(modifier = Modifier.height(8.dp))
         Text(text = "Version: $version")
         Text(text = "Syscall Test: $spliceMsg")

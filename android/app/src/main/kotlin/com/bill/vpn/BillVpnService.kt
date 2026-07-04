@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import mobile.Mobile // This will be available after gomobile bind
 
-class LumineVpnService : VpnService() {
+class BillVpnService : VpnService() {
 
     private var vpnInterface: ParcelFileDescriptor? = null
     private var coreTunFd: Int? = null
@@ -54,7 +54,7 @@ class LumineVpnService : VpnService() {
         val targetConfig = requestedConfig ?: if (shouldRecover) repository.getLastRunningConfigName() else null
 
         if (targetConfig == null) {
-            Log.i("LumineVpn", "Ignoring sticky restart without persisted running state")
+            Log.i("BillVpn", "Ignoring sticky restart without persisted running state")
             if (!Mobile.isRunning() && VpnRuntimeState.status.value.phase != "error") {
                 VpnRuntimeState.setActive(false)
                 VpnRuntimeState.setStatus("idle", "点此启动服务")
@@ -67,7 +67,7 @@ class LumineVpnService : VpnService() {
         repository.setVpnShouldRun(true, configName)
         if (shouldRecover) {
             VpnRuntimeState.setStatus("starting", "正在恢复代理")
-            Log.i("LumineVpn", "Recovering VPN after service restart with config: $configName")
+            Log.i("BillVpn", "Recovering VPN after service restart with config: $configName")
         }
         startVpn()
         return START_STICKY
@@ -76,7 +76,7 @@ class LumineVpnService : VpnService() {
     private fun startVpn() {
         synchronized(transitionLock) {
             if (isStarting || isStopping || coreStarted || vpnInterface != null || coreTunFd != null) {
-                Log.i("LumineVpn", "Ignoring duplicate start request")
+                Log.i("BillVpn", "Ignoring duplicate start request")
                 return
             }
             isStarting = true
@@ -91,11 +91,11 @@ class LumineVpnService : VpnService() {
             startForeground(NOTIFICATION_ID, buildNotification("正在启动代理"))
 
             val builder = Builder()
-                .setSession("Lumine")
+                .setSession("Bill VPN")
                 .setMtu(1500)
                 .addAddress("172.19.0.1", 30) // Virtual IP
                 .addAddress("fd66:6c75:6d69::1", 64) // Virtual IPv6
-                .addDnsServer("172.19.0.2")   // Lumine hijacked DNS
+                .addDnsServer("172.19.0.2")   // Bill VPN hijacked DNS
                 .addRoute("0.0.0.0", 0)       // Global IPv4 proxy
                 .addRoute("::", 0)            // Global IPv6 proxy
 
@@ -109,7 +109,7 @@ class LumineVpnService : VpnService() {
                 val fd = tun.detachFd()
                 vpnInterface = null
                 coreTunFd = fd
-                Log.i("LumineVpn", "Established TUN FD: $fd")
+                Log.i("BillVpn", "Established TUN FD: $fd")
                 VpnRuntimeState.setStatus("starting", "VPN 已建立，正在启动核心")
 
                 serviceScope.launch {
@@ -132,11 +132,11 @@ class LumineVpnService : VpnService() {
                             }
                             coreOwnsTunFd = true
                         }
-                        val error = Mobile.startLumine(fd.toLong(), configName)
+                        val error = Mobile.startBill(fd.toLong(), configName)
                         if (error.isNotEmpty()) {
                             coreOwnsTunFd = false
                             closePendingTunFd()
-                            Log.e("LumineVpn", "Go core failed: $error")
+                            Log.e("BillVpn", "Go core failed: $error")
                             updateNotification("启动失败: $error")
                             VpnRuntimeState.setActive(false)
                             VpnRuntimeState.setStatus("error", "启动失败: $error")
@@ -144,7 +144,7 @@ class LumineVpnService : VpnService() {
                             stopVpn()
                         } else {
                             coreStarted = true
-                            Log.i("LumineVpn", "Lumine started successfully")
+                            Log.i("BillVpn", "Bill VPN started successfully")
                             VpnRuntimeState.setActive(true)
                             VpnRuntimeState.setStatus("running", "代理运行中")
                             updateNotification("代理运行中")
@@ -155,7 +155,7 @@ class LumineVpnService : VpnService() {
                             }
                         }
                     } catch (e: Exception) {
-                        Log.e("LumineVpn", "Failed to initialize Go core", e)
+                        Log.e("BillVpn", "Failed to initialize Go core", e)
                         VpnRuntimeState.setActive(false)
                         VpnRuntimeState.setStatus("error", "核心初始化失败")
                         repository.setVpnShouldRun(false)
@@ -174,7 +174,7 @@ class LumineVpnService : VpnService() {
                 }
             }
         } catch (e: Exception) {
-            Log.e("LumineVpn", "Failed to start VPN", e)
+            Log.e("BillVpn", "Failed to start VPN", e)
             isStarting = false
             VpnRuntimeState.setActive(false)
             VpnRuntimeState.setStatus("error", "启动 VPN 失败")
@@ -188,7 +188,7 @@ class LumineVpnService : VpnService() {
     private fun stopVpn() {
         val stopShellImmediately = synchronized(transitionLock) {
             if (isStopping) {
-                Log.i("LumineVpn", "Ignoring duplicate stop request")
+                Log.i("BillVpn", "Ignoring duplicate stop request")
                 return@synchronized false
             }
             if (!isStarting && !coreStarted && vpnInterface == null && coreTunFd == null) {
@@ -268,7 +268,7 @@ class LumineVpnService : VpnService() {
                     input.copyTo(output)
                 }
             }
-            Log.i("LumineVpn", "Created default config at ${target.absolutePath}")
+            Log.i("BillVpn", "Created default config at ${target.absolutePath}")
             return
         }
 
@@ -315,7 +315,7 @@ class LumineVpnService : VpnService() {
                 }
                 lastWatchdogRecoveryAt = now
 
-                Log.w("LumineVpn", "Watchdog detected core/service desync, restarting VPN")
+                Log.w("BillVpn", "Watchdog detected core/service desync, restarting VPN")
                 VpnRuntimeState.setActive(false)
                 VpnRuntimeState.setStatus("starting", "检测到核心退出，正在恢复")
                 recoverVpnFromWatchdog()
@@ -405,7 +405,7 @@ class LumineVpnService : VpnService() {
         }
 
         if (shouldStopCore) {
-            runCatching { Mobile.stopLumine() }
+            runCatching { Mobile.stopBill() }
         } else {
             closePendingTunFd()
         }
@@ -444,7 +444,7 @@ class LumineVpnService : VpnService() {
         }
 
         return builder
-            .setContentTitle("Lumine")
+            .setContentTitle("Bill VPN")
             .setContentText(contentText)
             .setSmallIcon(android.R.drawable.ic_dialog_info)
             .setOngoing(true)
@@ -464,7 +464,7 @@ class LumineVpnService : VpnService() {
         val manager = getSystemService(NotificationManager::class.java)
         val channel = NotificationChannel(
             NOTIFICATION_CHANNEL_ID,
-            "Lumine VPN",
+            "Bill VPN",
             NotificationManager.IMPORTANCE_LOW
         )
         manager.createNotificationChannel(channel)
@@ -473,7 +473,7 @@ class LumineVpnService : VpnService() {
     companion object {
         private const val ACTION_STOP = "STOP"
         private const val EXTRA_CONFIG_NAME = "CONFIG_NAME"
-        private const val NOTIFICATION_CHANNEL_ID = "lumine_vpn"
+        private const val NOTIFICATION_CHANNEL_ID = "bill_vpn"
         private const val NOTIFICATION_ID = 1001
         private const val WATCHDOG_INTERVAL_MS = 5_000L
         private const val WATCHDOG_RECOVERY_COOLDOWN_MS = 15_000L

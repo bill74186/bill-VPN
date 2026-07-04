@@ -260,7 +260,7 @@ private fun statusContentTransform(): ContentTransform {
 }
 
 private fun openProjectPage(context: Context) {
-    val uri = Uri.parse("https://github.com/coolapijust/lumine-for-android")
+    val uri = Uri.parse("https://github.com/bill74186/bill-VPN")
     val baseIntent = Intent(Intent.ACTION_VIEW, uri).apply {
         addCategory(Intent.CATEGORY_BROWSABLE)
         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

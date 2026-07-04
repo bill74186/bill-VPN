@@ -6,7 +6,7 @@ import (
 	"io"
 	"net"
 
-	lumine "github.com/moi-si/lumine/internal"
+	bill "github.com/moi-si/bill/internal"
 	log "github.com/moi-si/mylog"
 )
 
@@ -40,7 +40,7 @@ func serveLocalDNSTCP(conn net.Conn, logger *log.Logger) {
 			return
 		}
 
-		resp, err := lumine.HandleDNSQueryPacket(payload)
+		resp, err := bill.HandleDNSQueryPacket(payload)
 		if err != nil {
 			logger.Error("Handle hijacked TCP DNS query:", err)
 			return

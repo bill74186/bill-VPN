@@ -1,9 +1,9 @@
-# Lumine Android Build Makefile
+# Bill Android Build Makefile
 
 GOMOBILE=gomobile
 TARGET=android
 OUT_DIR=android/app/libs
-AAR_NAME=LumineCore.aar
+AAR_NAME=BillCore.aar
 PKG=./mobile
 GOFLAGS_BIND=-mod=mod
 ANDROID_API=24
@@ -20,4 +20,4 @@ android:
 	$(POWERSHELL) scripts/gomobile-bind.ps1 -AndroidHome "$(ANDROID_HOME)" -Output "$(OUT_DIR)/$(AAR_NAME)" -AndroidApi $(ANDROID_API) -Package "$(PKG)"
 
 clean:
-	rm -rf $(OUT_DIR)/$(AAR_NAME) $(OUT_DIR)/LumineCore-sources.jar
+	rm -rf $(OUT_DIR)/$(AAR_NAME) $(OUT_DIR)/BillCore-sources.jar

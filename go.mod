@@ -1,4 +1,4 @@
-module github.com/moi-si/lumine
+module github.com/moi-si/bill
 
 go 1.25.5
 

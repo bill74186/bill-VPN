@@ -1,4 +1,4 @@
-package lumine
+package bill
 
 import (
 	"encoding/binary"
@@ -192,7 +192,7 @@ func (c *policyConn) handleTLSLocked(record []byte) error {
 	return nil
 }
 
-type directLuminePacketConn struct {
+type directBillPacketConn struct {
 	net.PacketConn
 	timeout time.Duration
 }
@@ -202,13 +202,13 @@ func NewDirectPacketConn(timeout time.Duration) (net.PacketConn, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &directLuminePacketConn{
+	return &directBillPacketConn{
 		PacketConn: pc,
 		timeout:    timeout,
 	}, nil
 }
 
-func (pc *directLuminePacketConn) WriteTo(b []byte, addr net.Addr) (int, error) {
+func (pc *directBillPacketConn) WriteTo(b []byte, addr net.Addr) (int, error) {
 	if udpAddr, ok := addr.(*net.UDPAddr); ok {
 		return pc.PacketConn.WriteTo(b, udpAddr)
 	}

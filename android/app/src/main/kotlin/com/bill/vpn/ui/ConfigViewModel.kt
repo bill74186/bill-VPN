@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.bill.vpn.RuntimeLogSnapshot
 import com.bill.vpn.VpnRuntimeState
 import com.bill.vpn.VpnStatus
-import com.bill.vpn.model.LumineConfig
+import com.bill.vpn.model.BillVpnConfig
 import com.bill.vpn.repository.ExportedLogFile
 import com.bill.vpn.model.SubscriptionProfile
 import com.bill.vpn.repository.ConfigRepository
@@ -20,8 +20,8 @@ import kotlinx.coroutines.launch
 class ConfigViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = ConfigRepository(application)
 
-    private val _currentConfig = MutableStateFlow(LumineConfig())
-    val currentConfig: StateFlow<LumineConfig> = _currentConfig
+    private val _currentConfig = MutableStateFlow(BillVpnConfig())
+    val currentConfig: StateFlow<BillVpnConfig> = _currentConfig
 
     private val _configList = MutableStateFlow<List<String>>(emptyList())
     val configList: StateFlow<List<String>> = _configList
@@ -169,7 +169,7 @@ class ConfigViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-    fun updateConfig(updated: LumineConfig) {
+    fun updateConfig(updated: BillVpnConfig) {
         _currentConfig.value = updated
     }
 

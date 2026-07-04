@@ -1,6 +1,6 @@
 //go:build godns
 
-package lumine
+package bill
 
 import (
 	"context"

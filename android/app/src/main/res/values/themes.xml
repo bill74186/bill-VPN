@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Lumine" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Theme.BillVPN" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Main theme colors -->
         <item name="colorPrimary">#6A237C</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
