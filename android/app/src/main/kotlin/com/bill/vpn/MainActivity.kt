@@ -8,13 +8,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -132,12 +130,11 @@ fun MainContainer() {
         }
     }
 
-    Scaffold { innerPadding ->
-        NavHost(
-            navController = navController,
-            startDestination = Screen.Home.route,
-            modifier = Modifier.padding(innerPadding)
-        ) {
+    NavHost(
+        navController = navController,
+        startDestination = Screen.Home.route,
+        modifier = Modifier.fillMaxSize()
+    ) {
             composable(Screen.Home.route) {
                 HomeScreen(
                     navController = navController,
@@ -163,7 +160,6 @@ fun MainContainer() {
         }
     }
 }
-
 
 @Composable
 fun TestScreen(onStart: () -> Unit) {
