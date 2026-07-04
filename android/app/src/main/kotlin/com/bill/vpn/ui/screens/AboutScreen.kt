@@ -94,19 +94,6 @@ fun AboutScreen(navController: NavController) {
         }
     }
 
-    fun compareVersions(v1: String, v2: String): Int {
-        val parts1 = v1.split(".")
-        val parts2 = v2.split(".")
-        val maxLength = maxOf(parts1.size, parts2.size)
-        for (i in 0 until maxLength) {
-            val p1 = if (i < parts1.size) parts1[i].toIntOrNull() ?: 0 else 0
-            val p2 = if (i < parts2.size) parts2[i].toIntOrNull() ?: 0 else 0
-            if (p1 > p2) return 1
-            if (p1 < p2) return -1
-        }
-        return 0
-    }
-
     Scaffold(
         topBar = {
             TopAppBar(
@@ -267,4 +254,17 @@ fun shareApp(context: Context) {
     }
     val chooser = Intent.createChooser(intent, "分享 Bill VPN")
     context.startActivity(chooser)
+}
+
+fun compareVersions(v1: String, v2: String): Int {
+    val parts1 = v1.split(".")
+    val parts2 = v2.split(".")
+    val maxLength = maxOf(parts1.size, parts2.size)
+    for (i in 0 until maxLength) {
+        val p1 = if (i < parts1.size) parts1[i].toIntOrNull() ?: 0 else 0
+        val p2 = if (i < parts2.size) parts2[i].toIntOrNull() ?: 0 else 0
+        if (p1 > p2) return 1
+        if (p1 < p2) return -1
+    }
+    return 0
 }
