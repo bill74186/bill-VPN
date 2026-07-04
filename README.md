@@ -2,6 +2,14 @@
 
 [简体中文](./README_zh.md)
 
+[![License](https://img.shields.io/github/license/bill74186/bill-VPN)](https://github.com/bill74186/bill-VPN/blob/main/LICENSE)
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.2-purple?logo=kotlin&logoColor=white)](https://kotlinlang.org)
+[![Go](https://img.shields.io/github/go-mod/go-version/bill74186/bill-VPN?logo=go&logoColor=white&label=Go)](https://go.dev)
+[![Android](https://img.shields.io/badge/Android-7.0+-green?logo=android&logoColor=white)](https://developer.android.com)
+[![API](https://img.shields.io/badge/API-24+-brightgreen?logo=android&logoColor=white)](https://developer.android.com)
+[![Release](https://img.shields.io/github/v/release/bill74186/bill-VPN?logo=github&logoColor=white)](https://github.com/bill74186/bill-VPN/releases)
+[![CI](https://img.shields.io/github/actions/workflow/status/bill74186/bill-VPN/android-release.yml?branch=main&logo=github-actions&logoColor=white)](https://github.com/bill74186/bill-VPN/actions)
+
 Bill VPN is an Android VPN proxy application built on top of the [enimul](https://github.com/lzpls/enimul) core, providing stable and fast proxy service with intelligent traffic routing.
 
 ## Features
