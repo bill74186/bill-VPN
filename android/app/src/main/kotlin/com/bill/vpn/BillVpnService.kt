@@ -20,13 +20,13 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import mobile.Mobile // This will be available after gomobile bind
+import mobile.Mobile
 
 class BillVpnService : VpnService() {
 
     private var vpnInterface: ParcelFileDescriptor? = null
     private var coreTunFd: Int? = null
-    private var configName: String = "config" // Default config name
+    private var configName: String = "config"
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private val repository by lazy { ConfigRepository(applicationContext) }
     private val transitionLock = Any()
@@ -93,13 +93,12 @@ class BillVpnService : VpnService() {
             val builder = Builder()
                 .setSession("Bill VPN")
                 .setMtu(1500)
-                .addAddress("172.19.0.1", 30) // Virtual IP
-                .addAddress("fd66:6c75:6d69::1", 64) // Virtual IPv6
-                .addDnsServer("172.19.0.2")   // Bill VPN hijacked DNS
-                .addRoute("0.0.0.0", 0)       // Global IPv4 proxy
-                .addRoute("::", 0)            // Global IPv6 proxy
+                .addAddress("172.19.0.1", 30)
+                .addAddress("fd66:6c75:6d69::1", 64)
+                .addDnsServer("172.19.0.2")
+                .addRoute("0.0.0.0", 0)
+                .addRoute("::", 0)
 
-            // Keep the app's own sockets out of the VPN to avoid proxy self-loops.
             builder.addDisallowedApplication(packageName)
 
             vpnInterface = builder.establish()

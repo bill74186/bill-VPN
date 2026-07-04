@@ -1,6 +1,5 @@
 package com.bill.vpn.ui.screens
 
-import android.content.Context
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.core.animateFloatAsState
@@ -23,7 +22,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.font.FontWeight
@@ -44,8 +42,6 @@ fun HomeScreen(
     val isConnected by viewModel.isVpnActive.collectAsState()
     val selectedConfig by viewModel.selectedConfigDisplayName.collectAsState()
     val vpnStatus by viewModel.vpnStatus.collectAsState()
-    val context = LocalContext.current
-
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -61,7 +57,6 @@ fun HomeScreen(
             )
         }
 
-        // VPN Status Card
         item {
             StatusCard(
                 isConnected = isConnected,
@@ -75,7 +70,6 @@ fun HomeScreen(
             }
         }
 
-        // Profile Card
         item {
             MenuCard(
                 title = "配置",

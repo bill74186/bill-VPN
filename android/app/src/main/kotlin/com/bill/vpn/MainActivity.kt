@@ -8,18 +8,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -34,7 +28,6 @@ import com.bill.vpn.ui.theme.LocalThemePreferences
 import com.bill.vpn.ui.theme.BillVpnTheme
 import com.bill.vpn.ui.theme.ThemePreferences
 import com.bill.vpn.ui.theme.isAppInDarkTheme
-import mobile.Mobile
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -160,29 +153,4 @@ fun MainContainer() {
             composable(Screen.Logs.route) { LogScreen(navController, viewModel) }
             composable(Screen.About.route) { AboutScreen(navController) }
         }
-}
-
-@Composable
-fun TestScreen(onStart: () -> Unit) {
-    var version by remember { mutableStateOf("Loading...") }
-    val spliceMsg = remember { Mobile.helloSplice() }
-
-    LaunchedEffect(Unit) {
-        version = Mobile.getVersion()
-    }
-
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(text = "Bill VPN", style = MaterialTheme.typography.headlineMedium)
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(text = "Version: $version")
-        Text(text = "Syscall Test: $spliceMsg")
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = onStart) {
-            Text("Start VPN")
-        }
-    }
 }
