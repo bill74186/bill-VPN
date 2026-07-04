@@ -169,7 +169,7 @@ jobs:
       - name: Upload workflow artifacts
         uses: actions/upload-artifact@v5
         with:
-          name: lumine-android-${{ steps.meta.outputs.artifact_suffix }}
+          name: bill-vpn-${{ steps.meta.outputs.artifact_suffix }}
           path: |
             ${{ env.RELEASE_APK_GLOB }}
           if-no-files-found: error
@@ -190,7 +190,7 @@ jobs:
           fi
           for release_apk in "${release_apks[@]}"; do
             base_name="$(basename "$release_apk")"
-            cp "$release_apk" "release-assets/lumine-${{ steps.meta.outputs.artifact_suffix }}-${base_name}"
+            cp "$release_apk" "release-assets/bill-vpn-${{ steps.meta.outputs.artifact_suffix }}-${base_name}"
           done
 
           tag="${{ steps.meta.outputs.release_tag }}"
