@@ -162,7 +162,7 @@ jobs:
 
           release_name="${INPUT_RELEASE_NAME}"
           if [[ -z "$release_name" && -n "$tag" ]]; then
-            release_name="$tag"
+            release_name="$tag Bill-VPN"
           fi
 
           echo "release_tag=$tag" >> "$GITHUB_OUTPUT"
@@ -203,11 +203,17 @@ jobs:
             title="$tag"
           fi
 
+          version="${tag#v}"
+          changelog_url="https://github.com/${GITHUB_REPOSITORY}/commits/${tag}"
+
+          body="Latest version v${version}, Click the link to download.
+Full changelog: [${changelog_url}](${changelog_url})"
+
           if gh release view "$tag" >/dev/null 2>&1; then
             gh release upload "$tag" release-assets/* --clobber
           else
             gh release create "$tag" release-assets/* \
               --title "$title" \
-              --generate-notes \
+              --body "$body" \
               --target "$GITHUB_SHA"
           fi
