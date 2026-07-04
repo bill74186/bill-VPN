@@ -206,8 +206,7 @@ jobs:
           version="${tag#v}"
           changelog_url="https://github.com/${GITHUB_REPOSITORY}/commits/${tag}"
 
-          body="Latest version v${version}, Click the link to download.
-Full changelog: [${changelog_url}](${changelog_url})"
+          printf -v body 'Latest version v%s, Click the link to download.\nFull changelog: [%s](%s)' "$version" "$changelog_url" "$changelog_url"
 
           if gh release view "$tag" >/dev/null 2>&1; then
             gh release upload "$tag" release-assets/* --clobber
