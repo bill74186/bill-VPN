@@ -60,7 +60,7 @@ fun RuleListScreen(navController: NavController, viewModel: ConfigViewModel) {
             TopAppBar(
                 title = {
                     Column {
-                        Text("规则")
+                        Text("查看规则")
                         Text(
                             text = selectedConfig,
                             style = MaterialTheme.typography.bodySmall,
