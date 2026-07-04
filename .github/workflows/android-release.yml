@@ -148,6 +148,10 @@ jobs:
             tag="${INPUT_TAG_NAME}"
           fi
 
+          if [[ -z "$tag" && ( "${GITHUB_REF_NAME:-}" == "main" || "${GITHUB_REF_NAME:-}" == "master" ) ]]; then
+            tag="v1.${GITHUB_RUN_NUMBER}"
+          fi
+
           if [[ -n "$tag" ]]; then
             suffix="$tag"
             should_release=true
