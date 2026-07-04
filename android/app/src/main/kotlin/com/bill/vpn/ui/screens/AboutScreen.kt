@@ -78,8 +78,7 @@ fun AboutScreen(navController: NavController) {
 
                 val response = conn.inputStream.bufferedReader().readText()
                 val json = JSONObject(response)
-                val tagName = json.getString("tag_name")
-                tagName.removePrefix("v")
+                json.getString("tag_name").removePrefix("v")
             }
             latestVersion = result
 

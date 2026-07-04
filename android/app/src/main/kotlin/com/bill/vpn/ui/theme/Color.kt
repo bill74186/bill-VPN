@@ -37,6 +37,3 @@ val DarkOutline = Color(0xFF938F99)
 val DarkOutlineVariant = Color(0xFF49454F)
 val DarkError = Color(0xFFF2B8B5)
 val DarkOnError = Color(0xFF601410)
-
-val GreenConnect = Color(0xFF22C55E)
-val RedDisconnect = Color(0xFFEF4444)

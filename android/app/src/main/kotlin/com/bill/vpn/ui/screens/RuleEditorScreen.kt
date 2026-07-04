@@ -17,8 +17,7 @@ import com.bill.vpn.model.Policy
 @Composable
 fun RuleEditorScreen(navController: NavController, viewModel: ConfigViewModel, type: String) {
     val config by viewModel.currentConfig.collectAsState()
-    val key by viewModel.editingRuleKey.collectAsState()
-    val ruleKey = key
+    val ruleKey by viewModel.editingRuleKey.collectAsState()
 
     DisposableEffect(Unit) {
         onDispose {
